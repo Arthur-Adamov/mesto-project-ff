@@ -6,23 +6,29 @@ const cardContainer = content.querySelector('.places__list')
 
 
 
-// let name = initialCards[0].name
-// let img = initialCards[0].link
 
+const cardElements = initialCards.map(function (item) {
+        return {
+                name: item.name,
+                link: item.link
+        };
+});
 
-function addCard(name, link) {
+function render() {
+        cardElements.map(createCard);
+}      
 
+function createCard({name, link}) {
 
-        const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true)
-        cardContainer.append(cardElement)
+        const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true)        
 
         cardElement.querySelector('.card__title').textContent = name
         cardElement.querySelector('.card__image').src = link
 
+        return cardContainer.append(cardElement)
 }
 
-initialCards.forEach(addCard)
-// addCard()
+render()
 
 
 
