@@ -1,3 +1,7 @@
+import {initialCards} from './cards.js'
+import '../pages/index.css'
+
+
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content
 
@@ -32,3 +36,5 @@ function deleteCard(evt) {
 initialCards.forEach( (cardElement) => {
   cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard))
 })
+
+console.log('Hello!!!')
