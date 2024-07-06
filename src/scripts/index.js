@@ -59,9 +59,21 @@ const profileAddBtn = document.querySelector('.profile__add-button')
 function openPopup(popup) {
   popup.classList.add('popup_is-opened')
 
-  popup.querySelector('.popup__close').addEventListener('click', (evt) => {
-    evt.target.closest('.popup').classList.remove('popup_is-opened')
-    // closePopup(popup)
+  popup.querySelector('.popup__close').addEventListener('click', () => {
+    // evt.target.closest('.popup').classList.remove('popup_is-opened')
+    closePopup(popup)
+  })
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      closePopup(popup)
+    }
+  })
+
+  popup.addEventListener('click', (evt) => {
+    if (evt.target === popup) {
+      closePopup(popup)
+    }
   })
 
   // popup.addEventListener('click', (evt) => {
@@ -71,9 +83,15 @@ function openPopup(popup) {
   // })
 }
 
-// function closePopup(popup) {
-//   popup.classList.remove('popup_is-opened')
+
+
+// function closePopup(evt) {
+//   evt.target.closest('.popup').classList.remove('popup_is-opened')
 // }
+
+function closePopup(popup) {
+  popup.classList.remove('popup_is-opened')
+}
 
 profileEditBtn.addEventListener('click', () => {
   openPopup(popupEditProfile)
