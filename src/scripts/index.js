@@ -16,11 +16,6 @@ function createCard(name, link, deleteCard) {
 
   const card = cardTemplate.querySelector('.places__item').cloneNode(true)
   const deleteButton = card.querySelector('.card__delete-button') 
-  
-  // const popupCardImg = card.querySelector('.popup_type_image')
-  // const cardImg = card.querySelector('.card__image')
-  // console.log(cardImg)
-  // cardImg.addEventListener('click', openCardImg)
 
   card.querySelector('.card__title').textContent = name
   card.querySelector('.card__image').src = link
@@ -64,17 +59,21 @@ const profileAddBtn = document.querySelector('.profile__add-button')
 function openPopup(popup) {
   popup.classList.add('popup_is-opened')
 
-  popup.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup__close')) {
-      closePopup(popup)
-    }
+  popup.querySelector('.popup__close').addEventListener('click', (evt) => {
+    evt.target.closest('.popup').classList.remove('popup_is-opened')
+    // closePopup(popup)
   })
+
+  // popup.addEventListener('click', (evt) => {
+  //   if (evt.target.classList.contains('popup__close')) {
+  //     closePopup(popup)
+  //   }
+  // })
 }
 
-
-function closePopup(popup) {
-  popup.classList.remove('popup_is-opened')
-}
+// function closePopup(popup) {
+//   popup.classList.remove('popup_is-opened')
+// }
 
 profileEditBtn.addEventListener('click', () => {
   openPopup(popupEditProfile)
