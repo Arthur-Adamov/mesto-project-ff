@@ -88,7 +88,7 @@ function openPopup(popup) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_is-opened')
-  editProfileForm.reset()
+  // editProfileForm.reset()
 }
 
 profileEditBtn.addEventListener('click', () => {
@@ -121,7 +121,7 @@ profileAddBtn.addEventListener('click', () => {
 // })
 
 
-//формы
+//форма профиля
 const profileTitle = document.querySelector('.profile__title')
 const profileDescription = document.querySelector('.profile__description')
 
@@ -129,7 +129,7 @@ const editProfileForm = document.forms['edit-profile']
 const editProfileFormName = editProfileForm['name']
 const editProfileFormDescription = editProfileForm.description
 
-console.log(editProfileForm)
+// console.log(editProfileForm)
 
 function handleFormSubmit(evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
@@ -151,13 +151,24 @@ function handleFormSubmit(evt) {
 
 editProfileForm.addEventListener('submit', handleFormSubmit)
 
-
-
 // const newPlaceForm = document.forms['new-place']
-
 
 // console.log(editProfileForm.elements)
 // console.log(editProfileFormName)
 // console.log(editProfileFormDescription)
 
 // console.log(newPlaceForm)
+
+
+//форма карточки
+const newPlaceForm = document.forms['new-place']
+const newPlaceFormName = newPlaceForm['place-name']
+const newPlaceFormLink = newPlaceForm.link
+
+newPlaceForm.addEventListener('submit', (evt) => {
+  evt.preventDefault()
+
+  cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard))
+  evt.target.closest('.popup').classList.remove('popup_is-opened')
+  newPlaceForm.reset()
+})
