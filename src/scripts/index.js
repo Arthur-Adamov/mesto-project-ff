@@ -53,16 +53,14 @@ const profileAddBtn = document.querySelector('.profile__add-button')
 // const popupList = document.querySelectorAll('.popup')
 
 
-
-
-
 function openPopup(popup) {
   popup.classList.add('popup_is-opened')
 
-  popup.querySelector('.popup__close').addEventListener('click', () => {
+  popup.querySelector('.popup__close').addEventListener('click', (evt) => {
     // evt.target.closest('.popup').classList.remove('popup_is-opened')
     closePopup(popup)
-  })
+    evt.stopPropagation()
+  },true)
 
   document.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') {
@@ -81,9 +79,8 @@ function openPopup(popup) {
   //     closePopup(popup)
   //   }
   // })
+  
 }
-
-
 
 // function closePopup(evt) {
 //   evt.target.closest('.popup').classList.remove('popup_is-opened')
@@ -91,10 +88,13 @@ function openPopup(popup) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_is-opened')
+  editProfileForm.reset()
 }
 
 profileEditBtn.addEventListener('click', () => {
   openPopup(popupEditProfile)
+  editProfileFormName.value = profileTitle.textContent
+  editProfileFormDescription.value = profileDescription.textContent
 })
 
 profileAddBtn.addEventListener('click', () => {
@@ -119,3 +119,45 @@ profileAddBtn.addEventListener('click', () => {
 // popupCloseBtn.addEventListener('click', () => {
 //   console.log('click!!')
 // })
+
+
+//формы
+const profileTitle = document.querySelector('.profile__title')
+const profileDescription = document.querySelector('.profile__description')
+
+const editProfileForm = document.forms['edit-profile']
+const editProfileFormName = editProfileForm['name']
+const editProfileFormDescription = editProfileForm.description
+
+console.log(editProfileForm)
+
+function handleFormSubmit(evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+                                              // Так мы можем определить свою логику отправки.
+                                              // О том, как это делать, расскажем позже.
+
+  // Получите значение полей jobInput и nameInput из свойства value
+
+  // Выберите элементы, куда должны быть вставлены значения полей
+  profileTitle.textContent = editProfileFormName.value
+  profileDescription.textContent = editProfileFormDescription.value
+
+  // Вставьте новые значения с помощью textContent
+
+  evt.target.closest('.popup').classList.remove('popup_is-opened')
+  // closePopup(popup)
+
+}
+
+editProfileForm.addEventListener('submit', handleFormSubmit)
+
+
+
+// const newPlaceForm = document.forms['new-place']
+
+
+// console.log(editProfileForm.elements)
+// console.log(editProfileFormName)
+// console.log(editProfileFormDescription)
+
+// console.log(newPlaceForm)
