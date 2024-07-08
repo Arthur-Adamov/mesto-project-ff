@@ -12,16 +12,26 @@ const cardContainer = content.querySelector('.places__list')
 
 
 // @todo: Функция создания карточки
-function createCard(name, link, deleteCard) {
+function createCard(name, link, deleteCard, getLikeCard) {
 
   const card = cardTemplate.querySelector('.places__item').cloneNode(true)
-  const deleteButton = card.querySelector('.card__delete-button') 
+  const deleteButton = card.querySelector('.card__delete-button')
+  const likeButton = card.querySelector('.card__like-button')
 
   card.querySelector('.card__title').textContent = name
   card.querySelector('.card__image').src = link
   deleteButton.addEventListener('click', deleteCard)
+  likeButton.addEventListener('click', getLikeCard)
+
+  // card.querySelector('.card__like-button').addEventListener('click', (evt) => {
+  //   evt.target.classList.toggle('card__like-button_is-active')
+  // })
 
   return card
+}
+
+function getLikeCard(evt) {
+  evt.target.classList.toggle('card__like-button_is-active')
 }
 
 
@@ -41,7 +51,7 @@ function deleteCard(evt) {
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach( (cardElement) => {
-  cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard))
+  cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard))
 })
 
 
