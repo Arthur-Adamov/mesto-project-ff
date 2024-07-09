@@ -12,21 +12,24 @@ const cardContainer = content.querySelector('.places__list')
 
 
 // @todo: Функция создания карточки
-function createCard(name, link, deleteCard, getLikeCard, openCardImg) {
+function createCard(name, link, deleteCard, getLikeCard, openPopupCardImg) {
 
   const card = cardTemplate.querySelector('.places__item').cloneNode(true)
   const deleteButton = card.querySelector('.card__delete-button')
   const likeButton = card.querySelector('.card__like-button')
 
-
   const cardImg = card.querySelector('.card__image')
-  cardImg.addEventListener('click', () => {
-    const popupImg = popupTypeImg.querySelector('.popup__image')
-    const popupCaption = popupTypeImg.querySelector('.popup__caption') 
-    popupImg.setAttribute('src', link)
-    popupCaption.textContent = name
-    openPopup(popupTypeImg)
-  })
+
+  cardImg.addEventListener('click', openPopupCardImg)
+
+  // const cardImg = card.querySelector('.card__image')
+  // cardImg.addEventListener('click', () => {
+  //   const popupImg = popupTypeImg.querySelector('.popup__image')
+  //   const popupCaption = popupTypeImg.querySelector('.popup__caption') 
+  //   popupImg.setAttribute('src', link)
+  //   popupCaption.textContent = name
+  //   openPopup(popupTypeImg)
+  // })
 
   card.querySelector('.card__title').textContent = name
   card.querySelector('.card__image').src = link
@@ -42,8 +45,18 @@ function deleteCard(evt) {
   evt.target.closest('.places__item').remove()
 }
 
-function openCardImg() {
-  
+const popupTypeImg = document.querySelector('.popup_type_image')
+const popupImg = popupTypeImg.querySelector('.popup__image')
+const popupCaption = popupTypeImg.querySelector('.popup__caption')
+
+function openPopupCardImg(evt) {
+  const link = evt.target.src
+  popupImg.src = link
+
+  const name = evt.target.closest('.card').querySelector('.card__title').textContent
+  popupCaption.textContent = name
+
+  openPopup(popupTypeImg)
 }
 
 function getLikeCard(evt) {
@@ -52,16 +65,14 @@ function getLikeCard(evt) {
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach( (cardElement) => {
-  cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openCardImg))
+  cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
 })
 
 const popupEditProfile = document.querySelector('.popup_type_edit')
 const popupNewCard = document.querySelector('.popup_type_new-card')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const profileAddBtn = document.querySelector('.profile__add-button')
-// const popupList = document.querySelectorAll('.popup')
 
-const popupTypeImg = document.querySelector('.popup_type_image')
 
 
 function openPopup(popup) {
@@ -70,7 +81,6 @@ function openPopup(popup) {
   const popupCloseBtn = popup.querySelector('.popup__close')
 
   popupCloseBtn.addEventListener('click', (evt) => {
-    // evt.target.closest('.popup').classList.remove('popup_is-opened')
     closePopup(popup)
     evt.stopPropagation()
   },true)
@@ -142,7 +152,6 @@ newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
 
   cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard))
-  // evt.target.closest('.popup').classList.remove('popup_is-opened')
   closePopup(evt.target.closest('.popup'))
 
   newPlaceForm.reset()
