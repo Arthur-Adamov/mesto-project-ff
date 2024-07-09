@@ -12,49 +12,48 @@ const cardContainer = content.querySelector('.places__list')
 
 
 // @todo: Функция создания карточки
-function createCard(name, link, deleteCard, getLikeCard) {
+function createCard(name, link, deleteCard, getLikeCard, openCardImg) {
 
   const card = cardTemplate.querySelector('.places__item').cloneNode(true)
   const deleteButton = card.querySelector('.card__delete-button')
   const likeButton = card.querySelector('.card__like-button')
 
+
+  const cardImg = card.querySelector('.card__image')
+  cardImg.addEventListener('click', () => {
+    const popupImg = popupTypeImg.querySelector('.popup__image')
+    const popupCaption = popupTypeImg.querySelector('.popup__caption') 
+    popupImg.setAttribute('src', link)
+    popupCaption.textContent = name
+    openPopup(popupTypeImg)
+  })
+
   card.querySelector('.card__title').textContent = name
   card.querySelector('.card__image').src = link
+  
   deleteButton.addEventListener('click', deleteCard)
   likeButton.addEventListener('click', getLikeCard)
 
-  // card.querySelector('.card__like-button').addEventListener('click', (evt) => {
-  //   evt.target.classList.toggle('card__like-button_is-active')
-  // })
-
   return card
+}
+
+// @todo: Функция удаления карточки
+function deleteCard(evt) {
+  evt.target.closest('.places__item').remove()
+}
+
+function openCardImg() {
+  
 }
 
 function getLikeCard(evt) {
   evt.target.classList.toggle('card__like-button_is-active')
 }
 
-
-// function openCardImg(evt) {
-//   const card = evt.target.closest('.card')
-//   card.classList.add('card__image')
-// }
-
-
-
-// @todo: Функция удаления карточки
-function deleteCard(evt) {
-  const card = evt.target.closest('.places__item')
-  card.remove()
-}
-
-
 // @todo: Вывести карточки на страницу
 initialCards.forEach( (cardElement) => {
-  cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard))
+  cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openCardImg))
 })
-
-
 
 const popupEditProfile = document.querySelector('.popup_type_edit')
 const popupNewCard = document.querySelector('.popup_type_new-card')
@@ -62,11 +61,15 @@ const profileEditBtn = document.querySelector('.profile__edit-button')
 const profileAddBtn = document.querySelector('.profile__add-button')
 // const popupList = document.querySelectorAll('.popup')
 
+const popupTypeImg = document.querySelector('.popup_type_image')
+
 
 function openPopup(popup) {
-  popup.classList.add('popup_is-opened')
+  popup.classList.add('popup_is-opened', 'popup_is-animated')
 
-  popup.querySelector('.popup__close').addEventListener('click', (evt) => {
+  const popupCloseBtn = popup.querySelector('.popup__close')
+
+  popupCloseBtn.addEventListener('click', (evt) => {
     // evt.target.closest('.popup').classList.remove('popup_is-opened')
     closePopup(popup)
     evt.stopPropagation()
@@ -83,22 +86,12 @@ function openPopup(popup) {
       closePopup(popup)
     }
   })
-
-  // popup.addEventListener('click', (evt) => {
-  //   if (evt.target.classList.contains('popup__close')) {
-  //     closePopup(popup)
-  //   }
-  // })
   
 }
 
-// function closePopup(evt) {
-//   evt.target.closest('.popup').classList.remove('popup_is-opened')
-// }
 
 function closePopup(popup) {
-  popup.classList.remove('popup_is-opened')
-  // editProfileForm.reset()
+  popup.classList.remove('popup_is-opened')  
 }
 
 profileEditBtn.addEventListener('click', () => {
@@ -111,26 +104,6 @@ profileAddBtn.addEventListener('click', () => {
   openPopup(popupNewCard)
 })
 
-
-
-// popupCloseBtn.addEventListener('click', (evt) => {
-//   closePopup(evt.target.closest('.popup'))
-//   console.log(evt.target.closest('.popup'))
-// })
-
-// popupCloseBtn.addEventListener('click', () => {
-//   closePopup(popupEditProfile)
-// })
-
-// popupCloseBtn.addEventListener('click', () => {
-//   closePopup(popupCloseBtn.closest('.popup'));
-// })
-
-// popupCloseBtn.addEventListener('click', () => {
-//   console.log('click!!')
-// })
-
-
 //форма профиля
 const profileTitle = document.querySelector('.profile__title')
 const profileDescription = document.querySelector('.profile__description')
@@ -139,7 +112,6 @@ const editProfileForm = document.forms['edit-profile']
 const editProfileFormName = editProfileForm['name']
 const editProfileFormDescription = editProfileForm.description
 
-// console.log(editProfileForm)
 
 function handleFormSubmit(evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
@@ -154,20 +126,11 @@ function handleFormSubmit(evt) {
 
   // Вставьте новые значения с помощью textContent
 
-  evt.target.closest('.popup').classList.remove('popup_is-opened')
-  // closePopup(popup)
-
+  // evt.target.closest('.popup').classList.remove('popup_is-opened')
+  closePopup(evt.target.closest('.popup'))
 }
 
 editProfileForm.addEventListener('submit', handleFormSubmit)
-
-// const newPlaceForm = document.forms['new-place']
-
-// console.log(editProfileForm.elements)
-// console.log(editProfileFormName)
-// console.log(editProfileFormDescription)
-
-// console.log(newPlaceForm)
 
 
 //форма карточки
@@ -179,6 +142,8 @@ newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
 
   cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard))
-  evt.target.closest('.popup').classList.remove('popup_is-opened')
+  // evt.target.closest('.popup').classList.remove('popup_is-opened')
+  closePopup(evt.target.closest('.popup'))
+
   newPlaceForm.reset()
 })
