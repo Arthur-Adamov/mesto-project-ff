@@ -1,38 +1,15 @@
-import {cardTemplate} from './index.js'
+// import {cardTemplate} from './index.js'
 
-const arhiz = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg', import.meta.url);
-const chelyabinskayzObl = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg', import.meta.url)
-const ivanovo = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg', import.meta.url);
-const kamchatka = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg', import.meta.url);
-const holmogorskiyRayon = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg', import.meta.url);
-const baykal = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg', import.meta.url);
+export const arhiz = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg', import.meta.url);
+export const chelyabinskayzObl = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg', import.meta.url)
+export const ivanovo = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg', import.meta.url);
+export const kamchatka = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg', import.meta.url);
+export const holmogorskiyRayon = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg', import.meta.url);
+export const baykal = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg', import.meta.url);
 
-export const initialCards = [
-    {
-      name: "Архыз",
-      link: arhiz,
-    },
-    {
-      name: "Челябинская область",
-      link: chelyabinskayzObl,
-    },
-    {
-      name: "Иваново",
-      link: ivanovo,
-    },
-    {
-      name: "Камчатка",
-      link: kamchatka,
-    },
-    {
-      name: "Холмогорский район",
-      link: holmogorskiyRayon,
-    },
-    {
-      name: "Байкал",
-      link: baykal,
-    }
-];
+
+// @todo: Темплейт карточки
+const cardTemplate = document.querySelector('#card-template').content
 
 // @todo: Функция создания карточки
 export function createCard(name, link, deleteCard, getLikeCard, openPopupCardImg) {
@@ -46,7 +23,7 @@ export function createCard(name, link, deleteCard, getLikeCard, openPopupCardImg
   cardImg.addEventListener('click', openPopupCardImg)
 
   card.querySelector('.card__title').textContent = name
-  card.querySelector('.card__image').src = link
+  cardImg.src = link
   card.querySelector('.card__image').alt = name
 
   deleteButton.addEventListener('click', deleteCard)

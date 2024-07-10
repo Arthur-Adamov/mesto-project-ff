@@ -1,25 +1,24 @@
-import {initialCards} from './cards.js'
+import {initialCards} from '../components/initialCards.js'
 import '../pages/index.css'
 import {createCard} from './cards.js'
 import {deleteCard} from './cards.js'
 import {getLikeCard} from './cards.js'
 
-import {openPopupCardImg} from '../components/modal.js'
+// import {openPopupCardImg} from '../components/modal.js'
 import {openPopup} from '../components/modal.js'
 import {closePopup} from '../components/modal.js'
 
 
-// @todo: Темплейт карточки
-export const cardTemplate = document.querySelector('#card-template').content
+
 
 
 // @todo: DOM узлы
 const content = document.querySelector('.content')
 const cardContainer = content.querySelector('.places__list')
 
-export const popupTypeImg = document.querySelector('.popup_type_image')
-export const popupImg = popupTypeImg.querySelector('.popup__image')
-export const popupCaption = popupTypeImg.querySelector('.popup__caption')
+const popupTypeImg = document.querySelector('.popup_type_image')
+const popupImg = popupTypeImg.querySelector('.popup__image')
+const popupCaption = popupTypeImg.querySelector('.popup__caption')
 
 const popupEditProfile = document.querySelector('.popup_type_edit')
 const popupNewCard = document.querySelector('.popup_type_new-card')
@@ -55,22 +54,51 @@ profileAddBtn.addEventListener('click', () => {
   openPopup(popupNewCard)
 })
 
-function handleFormSubmit(evt) {
+function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
 
   profileTitle.textContent = editProfileFormName.value
   profileDescription.textContent = editProfileFormDescription.value
 
-  closePopup(evt.target.closest('.popup'))
+  closePopup(popupEditProfile)
 }
 
-editProfileForm.addEventListener('submit', handleFormSubmit)
+editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
 
 newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
 
   cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard))
-  closePopup(evt.target.closest('.popup'))
+  closePopup(popupNewCard)
 
   newPlaceForm.reset()
+})
+
+//исправления
+
+function openPopupCardImg(evt) {
+  const link = evt.target.src
+  popupImg.src = link
+
+  const name = evt.target.closest('.card').querySelector('.card__title').textContent
+  popupCaption.textContent = name
+
+  openPopup(popupTypeImg)
+}
+
+const popupEditProfileCloseButton = popupEditProfile.querySelector('.popup__close')
+const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
+
+popupEditProfileCloseButton.addEventListener('click', () => {
+  closePopup(popupEditProfile)
+})
+
+popupNewCardCloseButton.addEventListener('click', () => {
+  closePopup(popupNewCard)
+})
+
+const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
+
+popupTypeImgCloseButton.addEventListener('click', () => {
+  closePopup(popupTypeImg)
 })
