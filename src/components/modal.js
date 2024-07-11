@@ -16,15 +16,14 @@ export function closePopup(popup) {
 }
 
 function handleEscape(evt) {
-  const popupIsOpen = document.querySelector('.popup_is-opened')
   if (evt.key === 'Escape') {
+    const popupIsOpen = document.querySelector('.popup_is-opened')
     closePopup(popupIsOpen)
   }
 }
 
 function handleClickOverlaly(evt) {
-  const popupIsOpen = document.querySelector('.popup_is-opened')
   if (evt.target.classList.contains('popup_is-opened')) {
-    closePopup(popupIsOpen)
+    closePopup(evt.target)
   }
 }
