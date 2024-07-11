@@ -1,5 +1,3 @@
-// import {cardTemplate} from './index.js'
-
 export const arhiz = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg', import.meta.url);
 export const chelyabinskayzObl = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg', import.meta.url)
 export const ivanovo = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg', import.meta.url);
@@ -24,7 +22,7 @@ export function createCard(name, link, deleteCard, getLikeCard, openPopupCardImg
 
   card.querySelector('.card__title').textContent = name
   cardImg.src = link
-  card.querySelector('.card__image').alt = name
+  cardImg.alt = name
 
   deleteButton.addEventListener('click', deleteCard)
   likeButton.addEventListener('click', getLikeCard)

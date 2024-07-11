@@ -4,12 +4,8 @@ import {createCard} from './cards.js'
 import {deleteCard} from './cards.js'
 import {getLikeCard} from './cards.js'
 
-// import {openPopupCardImg} from '../components/modal.js'
 import {openPopup} from '../components/modal.js'
 import {closePopup} from '../components/modal.js'
-
-
-
 
 
 // @todo: DOM узлы
@@ -37,6 +33,10 @@ const editProfileFormDescription = editProfileForm.description
 const newPlaceForm = document.forms['new-place']
 const newPlaceFormName = newPlaceForm['place-name']
 const newPlaceFormLink = newPlaceForm.link
+
+const popupEditProfileCloseButton = popupEditProfile.querySelector('.popup__close')
+const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
+const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 
 
 // @todo: Вывести карточки на страницу
@@ -68,13 +68,11 @@ editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
 newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
 
-  cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard))
+  cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard, getLikeCard, openPopupCardImg))
   closePopup(popupNewCard)
 
   newPlaceForm.reset()
 })
-
-//исправления
 
 function openPopupCardImg(evt) {
   const link = evt.target.src
@@ -82,12 +80,10 @@ function openPopupCardImg(evt) {
 
   const name = evt.target.closest('.card').querySelector('.card__title').textContent
   popupCaption.textContent = name
+  popupImg.alt = name
 
   openPopup(popupTypeImg)
 }
-
-const popupEditProfileCloseButton = popupEditProfile.querySelector('.popup__close')
-const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
 
 popupEditProfileCloseButton.addEventListener('click', () => {
   closePopup(popupEditProfile)
@@ -96,8 +92,6 @@ popupEditProfileCloseButton.addEventListener('click', () => {
 popupNewCardCloseButton.addEventListener('click', () => {
   closePopup(popupNewCard)
 })
-
-const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 
 popupTypeImgCloseButton.addEventListener('click', () => {
   closePopup(popupTypeImg)
