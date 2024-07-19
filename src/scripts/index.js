@@ -34,6 +34,7 @@ const newPlaceForm = document.forms['new-place']
 const newPlaceFormName = newPlaceForm['place-name']
 const newPlaceFormLink = newPlaceForm.link
 
+//кнопки закрытия всех попапов
 const popupEditProfileCloseButton = popupEditProfile.querySelector('.popup__close')
 const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
 const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
@@ -44,6 +45,7 @@ initialCards.forEach( (cardElement) => {
   cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
 })
 
+//открытие попапов
 profileEditBtn.addEventListener('click', () => {
   openPopup(popupEditProfile)
   editProfileFormName.value = profileTitle.textContent
@@ -54,6 +56,7 @@ profileAddBtn.addEventListener('click', () => {
   openPopup(popupNewCard)
 })
 
+//отправка заполненой формы 
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
 
@@ -74,6 +77,7 @@ newPlaceForm.addEventListener('submit', (evt) => {
   newPlaceForm.reset()
 })
 
+//функция открытия попапа с картинкой
 function openPopupCardImg(evt) {
   const link = evt.target.src
   popupImg.src = link
@@ -85,6 +89,7 @@ function openPopupCardImg(evt) {
   openPopup(popupTypeImg)
 }
 
+//слушатели закрытия попапов
 popupEditProfileCloseButton.addEventListener('click', () => {
   closePopup(popupEditProfile)
 })
