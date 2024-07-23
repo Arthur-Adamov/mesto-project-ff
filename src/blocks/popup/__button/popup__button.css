@@ -25,3 +25,11 @@
     line-height: 17px;
   }
 }
+
+.form__submit_inactive {
+  background: #fff;
+  opacity: .2;
+  color: black;
+  border: 1px solid black;
+  pointer-events: none;
+}
