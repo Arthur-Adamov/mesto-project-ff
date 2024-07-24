@@ -43,9 +43,9 @@ const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 
 
 // @todo: Вывести карточки на страницу
-initialCards.forEach( (cardElement) => {
-  cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
-})
+// initialCards.forEach( (cardElement) => {
+//   cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
+// })
 
 //открытие попапов
 profileEditBtn.addEventListener('click', () => {
@@ -64,6 +64,21 @@ function handleFormEditProfileSubmit(evt) {
 
   profileTitle.textContent = editProfileFormName.value
   profileDescription.textContent = editProfileFormDescription.value
+
+  fetch('https://nomoreparties.co/v1/wff-cohort-19/users/me', {
+    method: 'PATCH',
+    headers: {
+      authorization: '10a67bb0-bc78-4f2e-ab49-c307af5093b0',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      // name: 'Marie Skłodowska Curie',
+      // about: 'Physicist and Chemist'
+
+      name: editProfileFormName.value,
+      about: editProfileFormDescription.value
+    })
+  })
 
   closePopup(popupEditProfile)
 }
@@ -107,3 +122,47 @@ popupNewCardCloseButton.addEventListener('click', () => {
 popupTypeImgCloseButton.addEventListener('click', () => {
   closePopup(popupTypeImg)
 })
+
+function updateCards () {
+  fetch('https://mesto.nomoreparties.co/v1/wff-cohort-19/cards', {
+    headers: {
+      authorization: '10a67bb0-bc78-4f2e-ab49-c307af5093b0'
+    }
+  })
+    .then(res => res.json())
+    .then((result) => {
+
+      // const newArr = initialCards.concat(result)
+
+      result.forEach( (cardElement) => {
+        cardContainer.prepend(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
+      })
+
+    })
+    .catch((err) => {
+      console.log('Ошибка. Запрос не выполнен', err);
+    })
+
+}
+
+updateCards()
+
+
+function updateProfileInfo () {
+  fetch('https://nomoreparties.co/v1/wff-cohort-19/users/me', {
+    headers: {
+      authorization: '10a67bb0-bc78-4f2e-ab49-c307af5093b0'
+    }
+  })
+  .then(res => res.json())
+  .then((res) => {
+    console.log(res)
+    profileTitle.textContent = res.name
+    profileDescription.textContent = res.about
+  })
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
+}
+
+updateProfileInfo()
