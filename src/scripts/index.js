@@ -7,6 +7,8 @@ import {getLikeCard} from './cards.js'
 import {openPopup} from '../components/modal.js'
 import {closePopup} from '../components/modal.js'
 
+import {enableValidation} from './validation.js'
+
 
 // @todo: DOM узлы
 const content = document.querySelector('.content')
@@ -69,91 +71,7 @@ function handleFormEditProfileSubmit(evt) {
 editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
 
 //Валидация формы
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
-
-  inputElement.classList.add('popup__input_type_error')
-
-  if(!inputElement.value) {
-    errorElement.textContent = 'Вы пропустили это поле.'
-  } else {
-    errorElement.textContent = errorMessage
-  }
-
-  errorElement.classList.add('form__input-error_active')
-}
-
-const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
-
-  inputElement.classList.remove('popup__input_type_error')
-  errorElement.classList.remove('form__input-error_active')
-  errorElement.textContent = ''
-}
-
-const isValid = (formElement, inputElement) => {
-  if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity(inputElement.dataset.errorMessage)
-  } else {
-    inputElement.setCustomValidity("")
-  }
-
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage)
-  } else {
-    hideInputError(formElement, inputElement)
-  }
-}
-
-const toggleButtonState = (inputList, buttonElement) => {
-  if(hasInvalidInput(inputList) ) {
-    buttonElement.disabled = true
-    buttonElement.classList.add('form__submit_inactive')
-  } else {
-    buttonElement.disabled = false
-    buttonElement.classList.remove('form__submit_inactive')
-  }
-}
-
-const hasInvalidInput = (inputList) => {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid
-  })
-}
-
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
-  const buttonElement = formElement.querySelector('.popup__button')
-
-
-
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      isValid(formElement, inputElement)
-
-      toggleButtonState(inputList, buttonElement)
-    })
-  })
-}
-
-
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'))
-
-  formList.forEach((formElement) => {
-    setEventListeners(formElement)
-  })
-
-}
-
 enableValidation()
-
-
-
-
-
-
-
 
 
 newPlaceForm.addEventListener('submit', (evt) => {

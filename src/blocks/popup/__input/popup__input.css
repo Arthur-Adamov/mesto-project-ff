@@ -32,6 +32,6 @@
   visibility: hidden;
 }
 
-.form__input-error_active {
+.popup__error_visible {
   visibility: visible;
 }

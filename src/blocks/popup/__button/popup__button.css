@@ -26,7 +26,7 @@
   }
 }
 
-.form__submit_inactive {
+.popup__button_disabled {
   background: #fff;
   opacity: .2;
   color: black;
