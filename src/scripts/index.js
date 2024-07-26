@@ -47,6 +47,43 @@ const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 //   cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
 // })
 
+
+//Обноляет информацию профиля с сервера
+import {updateProfileInfo} from '../components/api.js'
+updateProfileInfo(profileTitle, profileDescription)
+
+
+import {addNewCard} from '../components/api.js'
+//помещаем карточу в начало списка
+newPlaceForm.addEventListener('submit', (evt) => {
+  evt.preventDefault()
+
+  addNewCard(newPlaceFormName.value, newPlaceFormLink.value)
+
+  // cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard, getLikeCard, openPopupCardImg))
+
+  closePopup(popupNewCard)
+
+  newPlaceForm.reset()
+})
+
+
+import {getInitialCards} from '../components/api.js'
+
+//создаем карточки из массива
+const renderCards = (cards) => {
+  cards.forEach((cardElement) => {
+    cardContainer.prepend(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
+  })
+}
+
+//выводим карточки на страницу
+Promise.all([getInitialCards()])
+  .then(([card]) => {
+    renderCards(card)
+  });
+
+
 //открытие попапов
 profileEditBtn.addEventListener('click', () => {
   openPopup(popupEditProfile)
@@ -58,6 +95,8 @@ profileAddBtn.addEventListener('click', () => {
   openPopup(popupNewCard)
 })
 
+import {editProfileFormInfo} from '../components/api.js'
+
 //отправка заполненой формы
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
@@ -65,20 +104,7 @@ function handleFormEditProfileSubmit(evt) {
   profileTitle.textContent = editProfileFormName.value
   profileDescription.textContent = editProfileFormDescription.value
 
-  fetch('https://nomoreparties.co/v1/wff-cohort-19/users/me', {
-    method: 'PATCH',
-    headers: {
-      authorization: '10a67bb0-bc78-4f2e-ab49-c307af5093b0',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      // name: 'Marie Skłodowska Curie',
-      // about: 'Physicist and Chemist'
-
-      name: editProfileFormName.value,
-      about: editProfileFormDescription.value
-    })
-  })
+  editProfileFormInfo(editProfileFormName, editProfileFormDescription)
 
   closePopup(popupEditProfile)
 }
@@ -89,14 +115,7 @@ editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
 enableValidation()
 
 
-newPlaceForm.addEventListener('submit', (evt) => {
-  evt.preventDefault()
 
-  cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard, getLikeCard, openPopupCardImg))
-  closePopup(popupNewCard)
-
-  newPlaceForm.reset()
-})
 
 //функция открытия попапа с картинкой
 function openPopupCardImg(evt) {
@@ -122,47 +141,3 @@ popupNewCardCloseButton.addEventListener('click', () => {
 popupTypeImgCloseButton.addEventListener('click', () => {
   closePopup(popupTypeImg)
 })
-
-function updateCards () {
-  fetch('https://mesto.nomoreparties.co/v1/wff-cohort-19/cards', {
-    headers: {
-      authorization: '10a67bb0-bc78-4f2e-ab49-c307af5093b0'
-    }
-  })
-    .then(res => res.json())
-    .then((result) => {
-
-      // const newArr = initialCards.concat(result)
-
-      result.forEach( (cardElement) => {
-        cardContainer.prepend(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
-      })
-
-    })
-    .catch((err) => {
-      console.log('Ошибка. Запрос не выполнен', err);
-    })
-
-}
-
-updateCards()
-
-
-function updateProfileInfo () {
-  fetch('https://nomoreparties.co/v1/wff-cohort-19/users/me', {
-    headers: {
-      authorization: '10a67bb0-bc78-4f2e-ab49-c307af5093b0'
-    }
-  })
-  .then(res => res.json())
-  .then((res) => {
-    console.log(res)
-    profileTitle.textContent = res.name
-    profileDescription.textContent = res.about
-  })
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
-}
-
-updateProfileInfo()

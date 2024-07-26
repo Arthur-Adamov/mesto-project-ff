@@ -30,6 +30,8 @@ export function createCard(name, link, deleteCard, getLikeCard, openPopupCardImg
   return card
 }
 
+
+
 // @todo: Функция удаления карточки
 export function deleteCard(evt) {
   evt.target.closest('.places__item').remove()
