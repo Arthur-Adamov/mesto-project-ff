@@ -10,11 +10,12 @@ export const baykal = new URL('https://pictures.s3.yandex.net/frontend-developer
 const cardTemplate = document.querySelector('#card-template').content
 
 // @todo: Функция создания карточки
-export function createCard(name, link, deleteCard, getLikeCard, openPopupCardImg) {
+export function createCard(name, link, likes, deleteCard, getLikeCard, openPopupCardImg) {
 
   const card = cardTemplate.querySelector('.places__item').cloneNode(true)
   const deleteButton = card.querySelector('.card__delete-button')
   const likeButton = card.querySelector('.card__like-button')
+  const likeCount = card.querySelector('.card__like_count')
 
   const cardImg = card.querySelector('.card__image')
 
@@ -26,6 +27,8 @@ export function createCard(name, link, deleteCard, getLikeCard, openPopupCardImg
 
   deleteButton.addEventListener('click', deleteCard)
   likeButton.addEventListener('click', getLikeCard)
+
+  likeCount.textContent = likes.length
 
   return card
 }

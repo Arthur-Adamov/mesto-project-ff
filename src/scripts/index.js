@@ -73,7 +73,7 @@ import {getInitialCards} from '../components/api.js'
 //создаем карточки из массива
 const renderCards = (cards) => {
   cards.forEach((cardElement) => {
-    cardContainer.prepend(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
+    cardContainer.append(createCard(cardElement.name, cardElement.link, cardElement.likes, deleteCard, getLikeCard, openPopupCardImg))
   })
 }
 
