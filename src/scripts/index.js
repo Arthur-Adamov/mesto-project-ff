@@ -42,62 +42,31 @@ const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
 const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 
 
-// @todo: Вывести карточки на страницу
-// initialCards.forEach( (cardElement) => {
-//   cardContainer.append(createCard(cardElement.name, cardElement.link, deleteCard, getLikeCard, openPopupCardImg))
+//Обноляет информацию профиля с сервера
+import {getProfileInfo} from '../components/api.js'
+// getProfileInfo(profileTitle, profileDescription)
+
+// getProfileInfo().then((res) => {
+//   console.log(res.name)
+//   console.log(res.about)
+//   console.log(res._id)
 // })
 
-
-//Обноляет информацию профиля с сервера
-import {updateProfileInfo} from '../components/api.js'
-updateProfileInfo(profileTitle, profileDescription)
-
-
-import {addNewCard} from '../components/api.js'
-//помещаем карточу в начало списка
-newPlaceForm.addEventListener('submit', (evt) => {
-  evt.preventDefault()
-
-  addNewCard(newPlaceFormName.value, newPlaceFormLink.value)
-
-  // cardContainer.prepend(createCard(newPlaceFormName.value, newPlaceFormLink.value, deleteCard, getLikeCard, openPopupCardImg))
-
-  closePopup(popupNewCard)
-
-  newPlaceForm.reset()
-})
-
-
-import {getInitialCards} from '../components/api.js'
-
-//создаем карточки из массива
-const renderCards = (cards) => {
-  cards.forEach((cardElement) => {
-    cardContainer.append(createCard(cardElement.name, cardElement.link, cardElement.likes, deleteCard, getLikeCard, openPopupCardImg))
-  })
+const renderProfile = (profileInfo) => {
+  profileTitle.textContent = profileInfo.name
+  profileDescription.textContent = profileInfo.about
 }
 
-//выводим карточки на страницу
-Promise.all([getInitialCards()])
-  .then(([card]) => {
-    renderCards(card)
-  });
-
-
-//открытие попапов
+//открытие попапа профиля
 profileEditBtn.addEventListener('click', () => {
   openPopup(popupEditProfile)
   editProfileFormName.value = profileTitle.textContent
   editProfileFormDescription.value = profileDescription.textContent
 })
 
-profileAddBtn.addEventListener('click', () => {
-  openPopup(popupNewCard)
-})
-
 import {editProfileFormInfo} from '../components/api.js'
 
-//отправка заполненой формы
+//заполняет и отправяет на сервер форму профиля
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
 
@@ -111,11 +80,49 @@ function handleFormEditProfileSubmit(evt) {
 
 editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
 
-//Валидация формы
-enableValidation()
+
+
+import {addNewCard} from '../components/api.js'
+
+newPlaceForm.addEventListener('submit', (evt) => {
+  evt.preventDefault()
+
+  addNewCard(newPlaceFormName.value, newPlaceFormLink.value)
+
+  closePopup(popupNewCard)
+
+  newPlaceForm.reset()
+})
+
+
+import {getInitialCards} from '../components/api.js'
+import {deleteCardOnServer} from '../components/api.js'
+
+//создаем карточки из массива
+const renderCards = (cards) => {
+  cards.forEach((cardElement) => {
+    // deleteCardOnServer(cardElement)
+    // console.log(cardElement._id)
+    cardContainer.append(createCard(myId, cardElement.name, cardElement.link, cardElement.likes, deleteCard, getLikeCard, openPopupCardImg, cardElement))
+  })
+}
+
+
+let myId
+//выводим карточки на страницу
+Promise.all([getProfileInfo(), getInitialCards()])
+  .then(([profileInfo, card]) => {
+    myId = profileInfo._id
+    renderProfile(profileInfo)
+    renderCards(card)
+  });
 
 
 
+//открытие попапа карточки
+profileAddBtn.addEventListener('click', () => {
+  openPopup(popupNewCard)
+})
 
 //функция открытия попапа с картинкой
 function openPopupCardImg(evt) {
@@ -141,3 +148,6 @@ popupNewCardCloseButton.addEventListener('click', () => {
 popupTypeImgCloseButton.addEventListener('click', () => {
   closePopup(popupTypeImg)
 })
+
+//Валидация формы
+enableValidation()

@@ -5,12 +5,13 @@ export const kamchatka = new URL('https://pictures.s3.yandex.net/frontend-develo
 export const holmogorskiyRayon = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg', import.meta.url);
 export const baykal = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg', import.meta.url);
 
+import {deleteCardOnServer} from '../components/api'
 
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content
 
 // @todo: Функция создания карточки
-export function createCard(name, link, likes, deleteCard, getLikeCard, openPopupCardImg) {
+export function createCard(myId, name, link, likes, deleteCard, getLikeCard, openPopupCardImg, cardElement) {
 
   const card = cardTemplate.querySelector('.places__item').cloneNode(true)
   const deleteButton = card.querySelector('.card__delete-button')
@@ -25,7 +26,18 @@ export function createCard(name, link, likes, deleteCard, getLikeCard, openPopup
   cardImg.src = link
   cardImg.alt = name
 
-  deleteButton.addEventListener('click', deleteCard)
+
+  // console.log(cardElement._id)
+
+  if (cardElement.owner._id === myId) {
+    deleteButton.addEventListener('click', (cardElement) => {
+      deleteCard(cardElement)
+    })
+  } else {
+    deleteButton.remove();
+  }
+
+
   likeButton.addEventListener('click', getLikeCard)
 
   likeCount.textContent = likes.length
@@ -38,6 +50,7 @@ export function createCard(name, link, likes, deleteCard, getLikeCard, openPopup
 // @todo: Функция удаления карточки
 export function deleteCard(evt) {
   evt.target.closest('.places__item').remove()
+  console.log(evt.target)
 }
 
 export function getLikeCard(evt) {

@@ -26,19 +26,16 @@ export const editProfileFormInfo = (editProfileFormName, editProfileFormDescript
 
 
 //Обноляет информацию профиля с сервера
-export const updateProfileInfo = (profileTitle, profileDescription) => {
-  fetch(`${config.baseUrl}/users/me`, {
+export const getProfileInfo = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
   .then(handleResponse)
-  .then((res) => {
-    profileTitle.textContent = res.name
-    profileDescription.textContent = res.about
-  })
   .catch((err) => {
     console.log('Ошибка, запрос не выполнен', err)
   })
 }
+
 
 //Добавляем карточку на сервер
 export const addNewCard = (name, link) => {
@@ -70,5 +67,12 @@ export const getInitialCards = () => {
     })
 }
 
-
+//запрос на удаление карточки
+export const deleteCardOnServer = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    headers: config.headers,
+    method: 'DELETE'
+  })
+  .then(handleResponse)
+}
 
