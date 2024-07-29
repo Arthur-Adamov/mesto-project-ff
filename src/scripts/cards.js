@@ -20,6 +20,8 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
 
   const cardImg = card.querySelector('.card__image')
 
+  const cardId = cardElement._id
+
   cardImg.addEventListener('click', openPopupCardImg)
 
   card.querySelector('.card__title').textContent = name
@@ -27,16 +29,13 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
   cardImg.alt = name
 
 
-  // console.log(cardElement._id)
-
   if (cardElement.owner._id === myId) {
     deleteButton.addEventListener('click', (cardElement) => {
-      deleteCard(cardElement)
+      deleteCard(cardElement, cardId)
     })
   } else {
     deleteButton.remove();
   }
-
 
   likeButton.addEventListener('click', getLikeCard)
 
@@ -46,11 +45,10 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
 }
 
 
-
 // @todo: Функция удаления карточки
-export function deleteCard(evt) {
-  evt.target.closest('.places__item').remove()
-  console.log(evt.target)
+export function deleteCard(card, cardId) {
+  deleteCardOnServer(cardId)
+  card.target.closest('.places__item').remove()
 }
 
 export function getLikeCard(evt) {
