@@ -76,3 +76,20 @@ export const deleteCardOnServer = (cardId) => {
   .then(handleResponse)
 }
 
+//постановка лайка
+export const setLike = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    headers: config.headers,
+    method: 'PUT'
+  })
+  .then(handleResponse)
+}
+
+//снятие лайка
+export const removeLike = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    headers: config.headers,
+    method: 'DELETE'
+  })
+  .then(handleResponse)
+}

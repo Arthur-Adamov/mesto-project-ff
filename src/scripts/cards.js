@@ -6,6 +6,9 @@ export const holmogorskiyRayon = new URL('https://pictures.s3.yandex.net/fronten
 export const baykal = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg', import.meta.url);
 
 import {deleteCardOnServer} from '../components/api'
+import {setLike} from '../components/api'
+import {removeLike} from '../components/api'
+
 
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content
@@ -37,9 +40,16 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
     deleteButton.remove();
   }
 
-  likeButton.addEventListener('click', getLikeCard)
 
-  likeCount.textContent = likes.length
+  const countLikes = (item) => {
+    likeCount.textContent = item
+  }
+
+  countLikes(cardElement.likes.length)
+
+  likeButton.addEventListener('click', (cardElement) => {
+    getLikeCard(cardElement, cardId, countLikes)
+  })
 
   return card
 }
@@ -51,6 +61,16 @@ export function deleteCard(card, cardId) {
   card.target.closest('.places__item').remove()
 }
 
-export function getLikeCard(evt) {
-  evt.target.classList.toggle('card__like-button_is-active')
+export function getLikeCard(evt, cardId, countLikes) {
+  if(!evt.target.classList.contains('card__like-button_is-active')){
+    setLike(cardId).then((data) => {
+      countLikes(data.likes.length)
+      evt.target.classList.add('card__like-button_is-active')
+    })
+  } else {
+    removeLike(cardId).then((data) => {
+      countLikes(data.likes.length)
+      evt.target.classList.remove('card__like-button_is-active')
+    })
+  }
 }

@@ -96,14 +96,24 @@ newPlaceForm.addEventListener('submit', (evt) => {
 
 
 import {getInitialCards} from '../components/api.js'
-import {deleteCardOnServer} from '../components/api.js'
 
 //создаем карточки из массива
 const renderCards = (cards) => {
   cards.forEach((cardElement) => {
     // deleteCardOnServer(cardElement)
     // console.log(cardElement._id)
-    cardContainer.append(createCard(myId, cardElement.name, cardElement.link, cardElement.likes, deleteCard, getLikeCard, openPopupCardImg, cardElement))
+    cardContainer.append(
+      createCard(
+        myId,
+        cardElement.name,
+        cardElement.link,
+        cardElement.likes,
+        deleteCard,
+        getLikeCard,
+        openPopupCardImg,
+        cardElement
+      )
+    )
   })
 }
 
@@ -116,6 +126,9 @@ Promise.all([getProfileInfo(), getInitialCards()])
     renderProfile(profileInfo)
     renderCards(card)
   });
+
+
+
 
 
 
