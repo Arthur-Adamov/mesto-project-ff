@@ -1,4 +1,4 @@
-import {initialCards} from '../components/initialCards.js'
+// import {initialCards} from '../components/initialCards.js'
 import '../pages/index.css'
 import {createCard} from './cards.js'
 import {deleteCard} from './cards.js'
@@ -18,14 +18,19 @@ const popupTypeImg = document.querySelector('.popup_type_image')
 const popupImg = popupTypeImg.querySelector('.popup__image')
 const popupCaption = popupTypeImg.querySelector('.popup__caption')
 
+const popupEditAvatar = document.querySelector('.popup_type_avatar')
 const popupEditProfile = document.querySelector('.popup_type_edit')
 const popupNewCard = document.querySelector('.popup_type_new-card')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const profileAddBtn = document.querySelector('.profile__add-button')
 
 //форма профиля
+const profileAvatar = document.querySelector('.profile__image')
 const profileTitle = document.querySelector('.profile__title')
 const profileDescription = document.querySelector('.profile__description')
+
+const editAvatarProfileForm = document.forms['edit-avatar']
+const editAvatarProfileLink = editAvatarProfileForm.link
 
 const editProfileForm = document.forms['edit-profile']
 const editProfileFormName = editProfileForm['name']
@@ -37,6 +42,7 @@ const newPlaceFormName = newPlaceForm['place-name']
 const newPlaceFormLink = newPlaceForm.link
 
 //кнопки закрытия всех попапов
+const popupEditAvatarCloseButton = popupEditAvatar.querySelector('.popup__close')
 const popupEditProfileCloseButton = popupEditProfile.querySelector('.popup__close')
 const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
 const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
@@ -44,18 +50,32 @@ const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 
 //Обноляет информацию профиля с сервера
 import {getProfileInfo} from '../components/api.js'
-// getProfileInfo(profileTitle, profileDescription)
 
-// getProfileInfo().then((res) => {
-//   console.log(res.name)
-//   console.log(res.about)
-//   console.log(res._id)
-// })
 
 const renderProfile = (profileInfo) => {
   profileTitle.textContent = profileInfo.name
   profileDescription.textContent = profileInfo.about
 }
+
+const renderProfileAvatar = (profileInfo) => {
+  profileAvatar.style.backgroundImage = `url(${profileInfo.avatar})`
+}
+
+//открытие попапа смены аватара
+profileAvatar.addEventListener('click', () => {
+  openPopup(popupEditAvatar)
+})
+
+import {editAvatar} from '../components/api.js'
+//отправка формы с ссылкой на новый аватар
+editAvatarProfileForm.addEventListener('submit', (evt) => {
+  evt.preventDefault()
+
+  editAvatar(editAvatarProfileLink.value)
+
+  closePopup(popupEditAvatar)
+  editAvatarProfileForm.reset()
+})
 
 //открытие попапа профиля
 profileEditBtn.addEventListener('click', () => {
@@ -79,7 +99,6 @@ function handleFormEditProfileSubmit(evt) {
 }
 
 editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
-
 
 
 import {addNewCard} from '../components/api.js'
@@ -125,11 +144,8 @@ Promise.all([getProfileInfo(), getInitialCards()])
     myId = profileInfo._id
     renderProfile(profileInfo)
     renderCards(card)
+    renderProfileAvatar(profileInfo)
   });
-
-
-
-
 
 
 //открытие попапа карточки
@@ -150,6 +166,10 @@ function openPopupCardImg(evt) {
 }
 
 //слушатели закрытия попапов
+popupEditAvatarCloseButton.addEventListener('click', () => {
+  closePopup(popupEditAvatar)
+})
+
 popupEditProfileCloseButton.addEventListener('click', () => {
   closePopup(popupEditProfile)
 })

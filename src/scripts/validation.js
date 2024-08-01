@@ -1,17 +1,22 @@
 //Валидация формы
 
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-}
+// const validationConfig = {
+//   formSelector: '.popup__form',
+//   inputSelector: '.popup__input',
+//   submitButtonSelector: '.popup__button',
+//   inactiveButtonClass: 'popup__button_disabled',
+//   inputErrorClass: 'popup__input_type_error',
+//   errorClass: 'popup__error_visible'
+// }
 
 
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
+const showInputError = (
+  formElement,
+  inputElement,
+  errorMessage) => {
+  const errorElement = formElement.querySelector(
+    `.${inputElement.id}-error`
+  )
 
   inputElement.classList.add('popup__input_type_error')
 
@@ -24,8 +29,12 @@ const showInputError = (formElement, inputElement, errorMessage) => {
   errorElement.classList.add('popup__error_visible')
 }
 
+
+
 const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
+  const errorElement = formElement.querySelector(
+    `.${inputElement.id}-error`
+  )
 
   inputElement.classList.remove('popup__input_type_error')
   errorElement.classList.remove('popup__error_visible')
@@ -40,9 +49,14 @@ const isValid = (formElement, inputElement) => {
   }
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage)
+    showInputError(
+      formElement,
+      inputElement,
+      inputElement.validationMessage)
   } else {
-    hideInputError(formElement, inputElement)
+    hideInputError(
+      formElement,
+      inputElement)
   }
 }
 
@@ -63,8 +77,12 @@ const hasInvalidInput = (inputList) => {
 }
 
 const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
-  const buttonElement = formElement.querySelector('.popup__button')
+  const inputList = Array.from(
+    formElement.querySelectorAll('.popup__input')
+  )
+  const buttonElement = formElement.querySelector(
+    '.popup__button'
+  )
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
@@ -76,7 +94,9 @@ const setEventListeners = (formElement) => {
 }
 
 export const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'))
+  const formList = Array.from(
+    document.querySelectorAll('.popup__form')
+  )
 
   formList.forEach((formElement) => {
     setEventListeners(formElement)

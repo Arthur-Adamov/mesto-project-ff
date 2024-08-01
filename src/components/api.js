@@ -13,7 +13,10 @@ const handleResponse = (response) => {
 }
 
 //Обновляет информацию о профиле на сервере с заполненной формы
-export const editProfileFormInfo = (editProfileFormName, editProfileFormDescription) => {
+export const editProfileFormInfo = (
+  editProfileFormName,
+  editProfileFormDescription
+) => {
   fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
     method: 'PATCH',
@@ -33,6 +36,22 @@ export const getProfileInfo = () => {
   .then(handleResponse)
   .catch((err) => {
     console.log('Ошибка, запрос не выполнен', err)
+  })
+}
+
+
+//обновляем аватар
+export const editAvatar = (link) => {
+  fetch(`${config.baseUrl}/users/me/avatar`, {
+    headers: config.headers,
+    method: 'PATCH',
+      body: JSON.stringify({
+        avatar: link
+      })
+  })
+  .then(handleResponse)
+  .then((data) => {
+    console.log(data)
   })
 }
 
