@@ -10,6 +10,7 @@ const handleResponse = (response) => {
   if(response.ok) {
     return response.json()
   }
+  return Promise.reject(`Ошибка: ${res.status}`)
 }
 
 //Обновляет информацию о профиле на сервере с заполненной формы
@@ -17,13 +18,17 @@ export const editProfileFormInfo = (
   editProfileFormName,
   editProfileFormDescription
 ) => {
-  fetch(`${config.baseUrl}/users/me`, {
+  return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
     method: 'PATCH',
     body: JSON.stringify({
       name: editProfileFormName.value,
       about: editProfileFormDescription.value
     })
+  })
+  .then(handleResponse)
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
   })
 }
 
@@ -42,7 +47,7 @@ export const getProfileInfo = () => {
 
 //обновляем аватар
 export const editAvatar = (link) => {
-  fetch(`${config.baseUrl}/users/me/avatar`, {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     headers: config.headers,
     method: 'PATCH',
       body: JSON.stringify({
@@ -50,8 +55,8 @@ export const editAvatar = (link) => {
       })
   })
   .then(handleResponse)
-  .then((data) => {
-    console.log(data)
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
   })
 }
 
@@ -67,8 +72,8 @@ export const addNewCard = (name, link) => {
     })
   })
   .then(handleResponse)
-  .then((data) => {
-    console.log(data)
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
   })
 }
 
@@ -77,13 +82,13 @@ export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then((res) => res.json())
-    .then((res) => {
-      return res
-    })
-    .catch((err) => {
-      console.log('Ошибка. Запрос не выполнен', err);
-    })
+  .then(handleResponse)
+  .then((res) => {
+    return res
+  })
+  .catch((err) => {
+    console.log('Ошибка. Запрос не выполнен', err);
+  })
 }
 
 //запрос на удаление карточки
@@ -93,6 +98,9 @@ export const deleteCardOnServer = (cardId) => {
     method: 'DELETE'
   })
   .then(handleResponse)
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
 }
 
 //постановка лайка
@@ -102,6 +110,9 @@ export const setLike = (cardId) => {
     method: 'PUT'
   })
   .then(handleResponse)
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
 }
 
 //снятие лайка
@@ -111,4 +122,7 @@ export const removeLike = (cardId) => {
     method: 'DELETE'
   })
   .then(handleResponse)
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
 }

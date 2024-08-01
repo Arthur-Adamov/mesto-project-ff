@@ -14,6 +14,8 @@ import {enableValidation} from './validation.js'
 const content = document.querySelector('.content')
 const cardContainer = content.querySelector('.places__list')
 
+const popupSaveButton = document.querySelector('.popup__button')
+
 const popupTypeImg = document.querySelector('.popup_type_image')
 const popupImg = popupTypeImg.querySelector('.popup__image')
 const popupCaption = popupTypeImg.querySelector('.popup__caption')
@@ -51,6 +53,14 @@ const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 //Обноляет информацию профиля с сервера
 import {getProfileInfo} from '../components/api.js'
 
+const renderLoading = (isLoading) => {
+  if(isLoading) {
+    popupSaveButton.textContent = 'Сохранение...'
+  } else {
+    popupSaveButton.textContent = 'Сохранить'
+  }
+}
+
 
 const renderProfile = (profileInfo) => {
   profileTitle.textContent = profileInfo.name
@@ -70,8 +80,12 @@ import {editAvatar} from '../components/api.js'
 //отправка формы с ссылкой на новый аватар
 editAvatarProfileForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
+  renderLoading(true)
 
   editAvatar(editAvatarProfileLink.value)
+    .finally(() => {
+      renderLoading(false)
+    })
 
   closePopup(popupEditAvatar)
   editAvatarProfileForm.reset()
@@ -89,11 +103,17 @@ import {editProfileFormInfo} from '../components/api.js'
 //заполняет и отправяет на сервер форму профиля
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
+  renderLoading(true)
 
   profileTitle.textContent = editProfileFormName.value
   profileDescription.textContent = editProfileFormDescription.value
 
-  editProfileFormInfo(editProfileFormName, editProfileFormDescription)
+  editProfileFormInfo(
+    editProfileFormName,
+    editProfileFormDescription
+  ).finally(() => {
+    renderLoading(false)
+  })
 
   closePopup(popupEditProfile)
 }
@@ -105,8 +125,12 @@ import {addNewCard} from '../components/api.js'
 
 newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
+  renderLoading(true)
 
   addNewCard(newPlaceFormName.value, newPlaceFormLink.value)
+    .finally(() => {
+      renderLoading(false)
+    })
 
   closePopup(popupNewCard)
 

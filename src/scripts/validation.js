@@ -84,6 +84,8 @@ const setEventListeners = (formElement) => {
     '.popup__button'
   )
 
+  toggleButtonState(inputList, buttonElement)
+
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       isValid(formElement, inputElement)
