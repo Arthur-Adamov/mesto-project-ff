@@ -10,14 +10,8 @@
 // }
 
 
-const showInputError = (
-  formElement,
-  inputElement,
-  errorMessage) => {
-  const errorElement = formElement.querySelector(
-    `.${inputElement.id}-error`
-  )
-
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
   inputElement.classList.add('popup__input_type_error')
 
   if(!inputElement.value) {
@@ -32,9 +26,7 @@ const showInputError = (
 
 
 const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(
-    `.${inputElement.id}-error`
-  )
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
 
   inputElement.classList.remove('popup__input_type_error')
   errorElement.classList.remove('popup__error_visible')
@@ -77,12 +69,8 @@ const hasInvalidInput = (inputList) => {
 }
 
 const setEventListeners = (formElement) => {
-  const inputList = Array.from(
-    formElement.querySelectorAll('.popup__input')
-  )
-  const buttonElement = formElement.querySelector(
-    '.popup__button'
-  )
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
+  const buttonElement = formElement.querySelector('.popup__button')
 
   toggleButtonState(inputList, buttonElement)
 
@@ -96,9 +84,7 @@ const setEventListeners = (formElement) => {
 }
 
 export const enableValidation = () => {
-  const formList = Array.from(
-    document.querySelectorAll('.popup__form')
-  )
+  const formList = Array.from(document.querySelectorAll('.popup__form'))
 
   formList.forEach((formElement) => {
     setEventListeners(formElement)
@@ -106,7 +92,14 @@ export const enableValidation = () => {
 
 }
 
-const clearValidation = () => {
+export const clearValidation = (formElement) => {
+  const buttonElement = formElement.querySelector('.popup__button')
 
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
+
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement)
+  })
+  toggleButtonState(inputList, buttonElement)
 }
 
