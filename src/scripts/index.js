@@ -9,6 +9,14 @@ import {closePopup} from '../components/modal.js'
 
 import {enableValidation, clearValidation} from './validation.js'
 
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}
 
 // @todo: DOM узлы
 const content = document.querySelector('.content')
@@ -73,7 +81,7 @@ const renderProfileAvatar = (profileInfo) => {
 
 //открытие попапа смены аватара
 profileAvatar.addEventListener('click', () => {
-  clearValidation(editAvatarProfileForm)
+  clearValidation(editAvatarProfileForm, validationConfig)
   openPopup(popupEditAvatar)
 })
 
@@ -94,7 +102,7 @@ editAvatarProfileForm.addEventListener('submit', (evt) => {
 
 //открытие попапа профиля
 profileEditBtn.addEventListener('click', () => {
-  clearValidation(editProfileForm)
+  clearValidation(editProfileForm, validationConfig)
   openPopup(popupEditProfile)
   editProfileFormName.value = profileTitle.textContent
   editProfileFormDescription.value = profileDescription.textContent
@@ -176,7 +184,7 @@ Promise.all([getProfileInfo(), getInitialCards()])
 
 //открытие попапа карточки
 profileAddBtn.addEventListener('click', () => {
-  clearValidation(newPlaceForm)
+  clearValidation(newPlaceForm, validationConfig)
   openPopup(popupNewCard)
 })
 
@@ -210,4 +218,4 @@ popupTypeImgCloseButton.addEventListener('click', () => {
 })
 
 //Валидация формы
-enableValidation()
+enableValidation(validationConfig)
