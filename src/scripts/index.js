@@ -1,4 +1,3 @@
-// import {initialCards} from '../components/initialCards.js'
 import '../pages/index.css'
 import {createCard} from './cards.js'
 import {deleteCard} from './cards.js'
@@ -8,6 +7,13 @@ import {openPopup} from '../components/modal.js'
 import {closePopup} from '../components/modal.js'
 
 import {enableValidation, clearValidation} from './validation.js'
+
+import {getProfileInfo} from '../components/api.js'
+import {editAvatar} from '../components/api.js'
+import {editProfileFormInfo} from '../components/api.js'
+import {addNewCard} from '../components/api.js'
+import {getInitialCards} from '../components/api.js'
+
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -58,9 +64,6 @@ const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
 const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 
 
-//Обноляет информацию профиля с сервера
-import {getProfileInfo} from '../components/api.js'
-
 const renderLoading = (isLoading) => {
   if(isLoading) {
     popupSaveButton.textContent = 'Сохранение...'
@@ -69,12 +72,13 @@ const renderLoading = (isLoading) => {
   }
 }
 
-
+//рендерим профиль
 const renderProfile = (profileInfo) => {
   profileTitle.textContent = profileInfo.name
   profileDescription.textContent = profileInfo.about
 }
 
+//рендерим аватар
 const renderProfileAvatar = (profileInfo) => {
   profileAvatar.style.backgroundImage = `url(${profileInfo.avatar})`
 }
@@ -85,7 +89,6 @@ profileAvatar.addEventListener('click', () => {
   openPopup(popupEditAvatar)
 })
 
-import {editAvatar} from '../components/api.js'
 //отправка формы с ссылкой на новый аватар
 editAvatarProfileForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
@@ -108,8 +111,6 @@ profileEditBtn.addEventListener('click', () => {
   editProfileFormDescription.value = profileDescription.textContent
 })
 
-import {editProfileFormInfo} from '../components/api.js'
-
 //заполняет и отправяет на сервер форму профиля
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
@@ -130,9 +131,6 @@ function handleFormEditProfileSubmit(evt) {
 
 editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
 
-
-import {addNewCard} from '../components/api.js'
-
 newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
   renderLoading(true)
@@ -146,9 +144,6 @@ newPlaceForm.addEventListener('submit', (evt) => {
 
   newPlaceForm.reset()
 })
-
-
-import {getInitialCards} from '../components/api.js'
 
 //создаем карточки из массива
 const renderCards = (cards) => {
@@ -217,5 +212,5 @@ popupTypeImgCloseButton.addEventListener('click', () => {
   closePopup(popupTypeImg)
 })
 
-//Валидация формы
+//Валидация форм
 enableValidation(validationConfig)

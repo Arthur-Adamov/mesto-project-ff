@@ -32,7 +32,6 @@ export const editProfileFormInfo = (
   })
 }
 
-
 //Обноляет информацию профиля с сервера
 export const getProfileInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
@@ -43,7 +42,6 @@ export const getProfileInfo = () => {
     console.log('Ошибка, запрос не выполнен', err)
   })
 }
-
 
 //обновляем аватар
 export const editAvatar = (link) => {
@@ -59,7 +57,6 @@ export const editAvatar = (link) => {
     console.log('Ошибка, запрос не выполнен', err)
   })
 }
-
 
 //Добавляем карточку на сервер
 export const addNewCard = (name, link) => {

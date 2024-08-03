@@ -31,7 +31,6 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
   cardImg.src = link
   cardImg.alt = name
 
-
   if (cardElement.owner._id === myId) {
     deleteButton.addEventListener('click', (cardElement) => {
       deleteCard(cardElement, cardId)
@@ -39,7 +38,6 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
   } else {
     deleteButton.remove();
   }
-
 
   const countLikes = (item) => {
     likeCount.textContent = item
