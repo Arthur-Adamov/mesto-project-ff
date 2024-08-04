@@ -1,10 +1,3 @@
-export const arhiz = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg', import.meta.url);
-export const chelyabinskayzObl = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg', import.meta.url)
-export const ivanovo = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg', import.meta.url);
-export const kamchatka = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg', import.meta.url);
-export const holmogorskiyRayon = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg', import.meta.url);
-export const baykal = new URL('https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg', import.meta.url);
-
 import {deleteCardOnServer} from '../components/api'
 import {setLike} from '../components/api'
 import {removeLike} from '../components/api'
@@ -56,19 +49,30 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
 // @todo: Функция удаления карточки
 export function deleteCard(card, cardId) {
   deleteCardOnServer(cardId)
+    .catch((err) => {
+      console.log('Ошибка, запрос не выполнен', err)
+    })
   card.target.closest('.places__item').remove()
 }
 
 export function getLikeCard(evt, cardId, countLikes) {
   if(!evt.target.classList.contains('card__like-button_is-active')){
-    setLike(cardId).then((data) => {
+    setLike(cardId)
+    .then((data) => {
       countLikes(data.likes.length)
       evt.target.classList.add('card__like-button_is-active')
     })
+    .catch((err) => {
+      console.log('Ошибка, запрос не выполнен', err)
+    })
   } else {
-    removeLike(cardId).then((data) => {
+    removeLike(cardId)
+    .then((data) => {
       countLikes(data.likes.length)
       evt.target.classList.remove('card__like-button_is-active')
+    })
+    .catch((err) => {
+      console.log('Ошибка, запрос не выполнен', err)
     })
   }
 }

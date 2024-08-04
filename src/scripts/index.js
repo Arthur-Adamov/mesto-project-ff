@@ -1,7 +1,7 @@
 import '../pages/index.css'
-import {createCard} from './cards.js'
-import {deleteCard} from './cards.js'
-import {getLikeCard} from './cards.js'
+import {createCard} from './card.js'
+import {deleteCard} from './card.js'
+import {getLikeCard} from './card.js'
 
 import {openPopup} from '../components/modal.js'
 import {closePopup} from '../components/modal.js'
@@ -95,9 +95,12 @@ editAvatarProfileForm.addEventListener('submit', (evt) => {
   renderLoading(true)
 
   editAvatar(editAvatarProfileLink.value)
-    .finally(() => {
-      renderLoading(false)
-    })
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
+  .finally(() => {
+    renderLoading(false)
+  })
 
   closePopup(popupEditAvatar)
   editAvatarProfileForm.reset()
@@ -122,7 +125,11 @@ function handleFormEditProfileSubmit(evt) {
   editProfileFormInfo(
     editProfileFormName,
     editProfileFormDescription
-  ).finally(() => {
+  )
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
+  .finally(() => {
     renderLoading(false)
   })
 
@@ -136,9 +143,12 @@ newPlaceForm.addEventListener('submit', (evt) => {
   renderLoading(true)
 
   addNewCard(newPlaceFormName.value, newPlaceFormLink.value)
-    .finally(() => {
-      renderLoading(false)
-    })
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
+  .finally(() => {
+    renderLoading(false)
+  })
 
   closePopup(popupNewCard)
 
@@ -174,7 +184,10 @@ Promise.all([getProfileInfo(), getInitialCards()])
     renderProfile(profileInfo)
     renderCards(card)
     renderProfileAvatar(profileInfo)
-  });
+  })
+  .catch((err) => {
+    console.log('Ошибка, запрос не выполнен', err)
+  })
 
 
 //открытие попапа карточки

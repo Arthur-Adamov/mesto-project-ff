@@ -1,9 +1,9 @@
-import {arhiz} from '../scripts/cards'
-import {chelyabinskayzObl} from '../scripts/cards'
-import {ivanovo} from '../scripts/cards'
-import {kamchatka} from '../scripts/cards'
-import {holmogorskiyRayon} from '../scripts/cards'
-import {baykal} from '../scripts/cards'
+import {arhiz} from '../scripts/card'
+import {chelyabinskayzObl} from '../scripts/card'
+import {ivanovo} from '../scripts/card'
+import {kamchatka} from '../scripts/card'
+import {holmogorskiyRayon} from '../scripts/card'
+import {baykal} from '../scripts/card'
 
 
 export const initialCards = [

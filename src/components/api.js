@@ -27,9 +27,6 @@ export const editProfileFormInfo = (
     })
   })
   .then(handleResponse)
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
 }
 
 //Обноляет информацию профиля с сервера
@@ -38,9 +35,6 @@ export const getProfileInfo = () => {
     headers: config.headers
   })
   .then(handleResponse)
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
 }
 
 //обновляем аватар
@@ -53,9 +47,6 @@ export const editAvatar = (link) => {
       })
   })
   .then(handleResponse)
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
 }
 
 //Добавляем карточку на сервер
@@ -69,9 +60,6 @@ export const addNewCard = (name, link) => {
     })
   })
   .then(handleResponse)
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
 }
 
 //Получаем массив каточек с сервера
@@ -83,9 +71,6 @@ export const getInitialCards = () => {
   .then((res) => {
     return res
   })
-  .catch((err) => {
-    console.log('Ошибка. Запрос не выполнен', err);
-  })
 }
 
 //запрос на удаление карточки
@@ -95,9 +80,6 @@ export const deleteCardOnServer = (cardId) => {
     method: 'DELETE'
   })
   .then(handleResponse)
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
 }
 
 //постановка лайка
@@ -107,9 +89,6 @@ export const setLike = (cardId) => {
     method: 'PUT'
   })
   .then(handleResponse)
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
 }
 
 //снятие лайка
@@ -119,7 +98,4 @@ export const removeLike = (cardId) => {
     method: 'DELETE'
   })
   .then(handleResponse)
-  .catch((err) => {
-    console.log('Ошибка, запрос не выполнен', err)
-  })
 }
