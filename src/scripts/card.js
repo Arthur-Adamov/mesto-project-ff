@@ -32,6 +32,7 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
     deleteButton.remove();
   }
 
+  //счетчик лайков
   const countLikes = (item) => {
     likeCount.textContent = item
   }
@@ -40,7 +41,17 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
 
   likeButton.addEventListener('click', (cardElement) => {
     getLikeCard(cardElement, cardId, countLikes)
+
   })
+
+  //проверка моего лайка
+  const MyLike = cardElement.likes.some(({_id}) => {
+    return _id === myId
+  })
+
+  if(MyLike) {
+    likeButton.classList.add('card__like-button_is-active')
+  }
 
   return card
 }
@@ -49,30 +60,20 @@ export function createCard(myId, name, link, likes, deleteCard, getLikeCard, ope
 // @todo: Функция удаления карточки
 export function deleteCard(card, cardId) {
   deleteCardOnServer(cardId)
+    .then(() => {
+      card.target.closest('.places__item').remove()
+    })
     .catch((err) => {
       console.log('Ошибка, запрос не выполнен', err)
     })
-  card.target.closest('.places__item').remove()
 }
 
 export function getLikeCard(evt, cardId, countLikes) {
-  if(!evt.target.classList.contains('card__like-button_is-active')){
-    setLike(cardId)
-    .then((data) => {
-      countLikes(data.likes.length)
-      evt.target.classList.add('card__like-button_is-active')
-    })
-    .catch((err) => {
-      console.log('Ошибка, запрос не выполнен', err)
-    })
-  } else {
-    removeLike(cardId)
-    .then((data) => {
-      countLikes(data.likes.length)
-      evt.target.classList.remove('card__like-button_is-active')
-    })
-    .catch((err) => {
-      console.log('Ошибка, запрос не выполнен', err)
-    })
-  }
+    const likeMethod = !evt.target.classList.contains('card__like-button_is-active') ? setLike : removeLike
+  likeMethod(cardId)
+  .then((data) => {
+    countLikes(data.likes.length)
+    evt.target.classList.toggle('card__like-button_is-active')
+  })
+  .catch(err => console.log(err))
 }

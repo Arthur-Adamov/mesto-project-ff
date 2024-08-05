@@ -14,16 +14,13 @@ const handleResponse = (response) => {
 }
 
 //Обновляет информацию о профиле на сервере с заполненной формы
-export const editProfileFormInfo = (
-  editProfileFormName,
-  editProfileFormDescription
-) => {
+export const editProfileFormInfo = (profileInfo) => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
     method: 'PATCH',
     body: JSON.stringify({
-      name: editProfileFormName.value,
-      about: editProfileFormDescription.value
+      name: profileInfo.name,
+      about: profileInfo.about
     })
   })
   .then(handleResponse)
@@ -50,13 +47,13 @@ export const editAvatar = (link) => {
 }
 
 //Добавляем карточку на сервер
-export const addNewCard = (name, link) => {
+export const addNewCard = (cardInfo) => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
     method: 'POST',
     body: JSON.stringify({
-      name: name,
-      link: link
+      name: cardInfo.name,
+      link: cardInfo.link
     })
   })
   .then(handleResponse)

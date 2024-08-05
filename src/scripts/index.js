@@ -64,7 +64,8 @@ const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close')
 const popupTypeImgCloseButton = popupTypeImg.querySelector('.popup__close')
 
 
-const renderLoading = (isLoading) => {
+const renderLoading = (isLoading, popup) => {
+  const popupSaveButton = popup.querySelector('.popup__button')
   if(isLoading) {
     popupSaveButton.textContent = 'Сохранение...'
   } else {
@@ -92,14 +93,19 @@ profileAvatar.addEventListener('click', () => {
 //отправка формы с ссылкой на новый аватар
 editAvatarProfileForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
-  renderLoading(true)
+  renderLoading(true, popupEditAvatar)
 
-  editAvatar(editAvatarProfileLink.value)
+  const avatarLink = editAvatarProfileLink.value
+
+  editAvatar(avatarLink)
+  .then((avatarLink) => {
+    renderProfileAvatar(avatarLink)
+  })
   .catch((err) => {
     console.log('Ошибка, запрос не выполнен', err)
   })
   .finally(() => {
-    renderLoading(false)
+    renderLoading(false, popupEditAvatar)
   })
 
   closePopup(popupEditAvatar)
@@ -117,20 +123,22 @@ profileEditBtn.addEventListener('click', () => {
 //заполняет и отправяет на сервер форму профиля
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
-  renderLoading(true)
+  renderLoading(true, popupEditProfile)
 
-  profileTitle.textContent = editProfileFormName.value
-  profileDescription.textContent = editProfileFormDescription.value
+  const profileInfo = {
+    name: editProfileFormName.value,
+    about: editProfileFormDescription.value
+  }
 
-  editProfileFormInfo(
-    editProfileFormName,
-    editProfileFormDescription
-  )
+  editProfileFormInfo(profileInfo)
+  .then((profileInfo) => {
+    renderProfile(profileInfo)
+  })
   .catch((err) => {
     console.log('Ошибка, запрос не выполнен', err)
   })
   .finally(() => {
-    renderLoading(false)
+    renderLoading(false, popupEditProfile)
   })
 
   closePopup(popupEditProfile)
@@ -140,14 +148,33 @@ editProfileForm.addEventListener('submit', handleFormEditProfileSubmit)
 
 newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault()
-  renderLoading(true)
+  renderLoading(true, popupNewCard)
 
-  addNewCard(newPlaceFormName.value, newPlaceFormLink.value)
+  const cardInfo = {
+    name: newPlaceFormName.value,
+    link: newPlaceFormLink.value
+  }
+
+  addNewCard(cardInfo)
+  .then((cardElement) => {
+    cardContainer.prepend(
+      createCard(
+        myId,
+        cardElement.name,
+        cardElement.link,
+        cardElement.likes,
+        deleteCard,
+        getLikeCard,
+        openPopupCardImg,
+        cardElement
+      )
+    )
+  })
   .catch((err) => {
     console.log('Ошибка, запрос не выполнен', err)
   })
   .finally(() => {
-    renderLoading(false)
+    renderLoading(false, popupNewCard)
   })
 
   closePopup(popupNewCard)
@@ -158,8 +185,6 @@ newPlaceForm.addEventListener('submit', (evt) => {
 //создаем карточки из массива
 const renderCards = (cards) => {
   cards.forEach((cardElement) => {
-    // deleteCardOnServer(cardElement)
-    // console.log(cardElement._id)
     cardContainer.append(
       createCard(
         myId,
